@@ -1,12 +1,10 @@
-from multiprocessing.connection import Client
-
 from API.api_client import ApiClient
 
-dicta = {
-    "name": "Alice",
-    "age": 30,
-    "city": "New York",
-    "is_student": False
-}
+import json
+
+# Открываем JSON-файл и загружаем его содержимое
+with open('../Test_data/create.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+
 APIC = ApiClient()
-APIC.get("/api/create")
+APIC.get("/api/create", data)
