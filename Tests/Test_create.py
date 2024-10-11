@@ -9,4 +9,4 @@ dicta = {
     "is_student": False
 }
 APIC = ApiClient()
-APIC.get("/api/create", dicta)
+APIC.get("/api/create")
