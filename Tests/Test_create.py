@@ -19,5 +19,11 @@ kwargs = {
 
 def test_create():
     APIC = ApiClient()
-    resp = APIC.post("/api/create", **kwargs)
-    assert resp.status_code==200
+    respcr = APIC.post("/api/create", **kwargs)
+    assert respcr.status_code==200
+    id2c = respcr.text
+    respget = APIC.get(f"/api/get/{id2c}")
+    assert json.loads(respget.text)["addition"]["additional_info"] == data["addition"]["additional_info"]
+    assert json.loads(respget.text)["addition"]["additional_number"] == data["addition"]["additional_number"]
+    assert json.loads(respget.text)["title"] == data["title"]
+    assert json.loads(respget.text)["important_numbers"] == data["important_numbers"]

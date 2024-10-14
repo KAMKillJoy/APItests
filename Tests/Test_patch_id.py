@@ -1,3 +1,5 @@
+import random
+
 from API.api_client import ApiClient
 import json
 from models.patch_model import  EntityData
@@ -18,7 +20,17 @@ kwargs = {
 }
 
 def test_patch_id():
-    id = 5
     APIC = ApiClient()
-    resp = APIC.patch(f"/api/patch/{id}", **kwargs)
-    assert resp.status_code==204
+
+    respall = APIC.get(f"/api/getAll")
+    ids = []
+    for i in json.loads(respall.text)["entity"]:
+        ids.append(i["id"])
+    id2p = random.choice(ids)
+    resp = APIC.patch(f"/api/patch/{id2p}", **kwargs)
+    assert resp.status_code == 204
+    respget = APIC.get(f"/api/get/{id2p}")
+    assert json.loads(respget.text)["addition"]["additional_info"] == data["addition"]["additional_info"]
+    assert json.loads(respget.text)["addition"]["additional_number"] == data["addition"]["additional_number"]
+    assert json.loads(respget.text)["title"] == data["title"]
+    assert json.loads(respget.text)["important_numbers"] == data["important_numbers"]
