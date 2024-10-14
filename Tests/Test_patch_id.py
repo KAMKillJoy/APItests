@@ -1,6 +1,6 @@
 from API.api_client import ApiClient
 import json
-from models.create_model import EntityData
+from models.patch_model import  EntityData
 
 # Загрузка данных из JSON-файла
 with open('../Test_data/patch.json', 'r', encoding='utf-8') as file:
