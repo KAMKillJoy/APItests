@@ -64,3 +64,9 @@ class ApiClient:
         Выполнение DELETE-запроса.
         """
         return self.request("DELETE", endpoint, **kwargs)
+
+    def patch(self, endpoint: str, **kwargs) -> requests.Response:
+        """
+        Выполнение PATCH-запроса.
+        """
+        return self.request("PATCH", endpoint, **kwargs)
