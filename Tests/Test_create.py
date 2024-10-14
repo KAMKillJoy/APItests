@@ -3,7 +3,7 @@ import json
 from models.create_model import EntityData
 
 # Загрузка данных из JSON-файла
-with open('../Test_data/create.json', 'r', encoding='utf-8') as file:
+with open('./Test_data/create.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 # Создание экземпляра модели Pydantic с загруженными данными
 entity_data = EntityData(**data)
@@ -16,6 +16,8 @@ kwargs = {
     },
     "data": json_data  # Передача сериализованных данных
 }
-APIC = ApiClient()
-resp = APIC.post("/api/create", **kwargs)
-print (resp.status_code)
+
+def test_create():
+    APIC = ApiClient()
+    resp = APIC.post("/api/create", **kwargs)
+    assert resp.status_code==200
