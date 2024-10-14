@@ -1,5 +1,7 @@
 import random
 
+import allure
+
 from API.api_client import ApiClient
 import json
 from models.patch_model import  EntityData
@@ -20,17 +22,27 @@ kwargs = {
 }
 
 def test_patch_id():
-    APIC = ApiClient()
+    allure.dynamic.title("Тест API-метода для изменения сущности")
+    allure.dynamic.description("Тест изменяет сущность, затем убеждается что изменения соответствуют ожидаемым")
+    allure.dynamic.tag("API_test", "Simbirsoft")
+    allure.dynamic.severity(allure.severity_level.CRITICAL)
+    allure.dynamic.label("owner", "John Doe")
 
-    respall = APIC.get(f"/api/getAll")
-    ids = []
-    for i in json.loads(respall.text)["entity"]:
-        ids.append(i["id"])
-    id2p = random.choice(ids)
-    resp = APIC.patch(f"/api/patch/{id2p}", **kwargs)
-    assert resp.status_code == 204
+    APIC = ApiClient()
+    with allure.step("Выбор случайной сущности из существующих"):
+        respall = APIC.get(f"/api/getAll")
+        ids = []
+        for i in json.loads(respall.text)["entity"]:
+            ids.append(i["id"])
+        id2p = random.choice(ids)
+    with allure.step("Отправка запроса на изменение сущности"):resp = APIC.patch(f"/api/patch/{id2p}", **kwargs)
+    with allure.step("Проверка что код ответа 204"):assert resp.status_code == 204
     respget = APIC.get(f"/api/get/{id2p}")
-    assert json.loads(respget.text)["addition"]["additional_info"] == data["addition"]["additional_info"]
-    assert json.loads(respget.text)["addition"]["additional_number"] == data["addition"]["additional_number"]
-    assert json.loads(respget.text)["title"] == data["title"]
-    assert json.loads(respget.text)["important_numbers"] == data["important_numbers"]
+    with allure.step("Проверка соответствия содержимого additional_info ожидаемому"):
+        assert json.loads(respget.text)["addition"]["additional_info"] == data["addition"]["additional_info"]
+    with allure.step("Проверка соответствия содержимого additional_number ожидаемому"):
+        assert json.loads(respget.text)["addition"]["additional_number"] == data["addition"]["additional_number"]
+    with allure.step("Проверка соответствия содержимого title ожидаемому"):
+        assert json.loads(respget.text)["title"] == data["title"]
+    with allure.step("Проверка соответствия содержимого important_numbers ожидаемому"):
+        assert json.loads(respget.text)["important_numbers"] == data["important_numbers"]
