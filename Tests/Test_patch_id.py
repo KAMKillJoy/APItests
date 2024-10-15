@@ -7,7 +7,7 @@ import json
 from models.patch_model import  EntityData
 
 # Загрузка данных из JSON-файла
-with open('./Test_data/patch.json', 'r', encoding='utf-8') as file:
+with open('../Test_data/patch.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 # Создание экземпляра модели Pydantic с загруженными данными
 entity_data = EntityData(**data)
